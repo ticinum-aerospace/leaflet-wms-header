@@ -11,7 +11,7 @@ $ npm install leaflet-wms-header --save
 
 ### JS Usage
 ```
-var wmsLayer = L.tileLayer.wms(
+var wmsLayer = L.TileLayer.wmsHeader(
     'https://demo.boundlessgeo.com/geoserver/ows?',
     {
         layers: 'ne:ne',
