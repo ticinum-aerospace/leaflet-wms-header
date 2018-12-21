@@ -1,6 +1,6 @@
 # leaflet-wms-header
 Custom headers on Leaflet TileLayer WMS.
-It's an easy plugin that allow to set custom header for WMS interface.
+It's a simple plugin that allow to set custom header for WMS interface.
 
 It works with javascript and typescript without any dependencies!
 
