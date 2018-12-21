@@ -1,19 +1,19 @@
 'use strict';
 
 function callAjax(url, callback, headers) {
-    var xmlhttp;
-		xmlhttp = new XMLHttpRequest();
-		xmlhttp.responseType = 'blob';
-    xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				callback(xmlhttp.response);
-			}
+  var xmlhttp;
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.responseType = 'blob';
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      callback(xmlhttp.response);
     }
-    xmlhttp.open("GET", url, true);
-		for (const h of headers) {
-			xmlhttp.setRequestHeader(h.header, h.value)
-		}
-    xmlhttp.send();
+  }
+  xmlhttp.open("GET", url, true);
+  for (const h of headers) {
+    xmlhttp.setRequestHeader(h.header, h.value)
+  }
+  xmlhttp.send();
 }
 
 L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
