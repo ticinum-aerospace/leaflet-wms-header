@@ -1,10 +1,10 @@
 'use strict';
 
-function callAjax(url, callback, headers) {
+function callAjax(url, callback, headers, abort) {
   var xmlhttp;
   xmlhttp = new XMLHttpRequest();
   xmlhttp.responseType = 'blob';
-  xmlhttp.onreadystatechange = function() {
+  xmlhttp.onreadystatechange = () => {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
       callback(xmlhttp.response);
     }
@@ -13,13 +13,19 @@ function callAjax(url, callback, headers) {
   for (const h of headers) {
     xmlhttp.setRequestHeader(h.header, h.value)
   }
+  if (abort) {
+    var sub = abort.then(() => {
+      xmlhttp.abort();
+    });
+  }
   xmlhttp.send();
 }
 
 L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
-  initialize: function (url, options, headers) {
+  initialize: function (url, options, headers, abort) {
     L.TileLayer.WMS.prototype.initialize.call(this, url, options);
     this.headers = headers;
+    this.abort = abort;
   },
   createTile(coords, done) {
     const url = this.getTileUrl(coords);
@@ -30,12 +36,13 @@ L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
         img.src = URL.createObjectURL(response);
         done(null, img);
       },
-      this.headers
+      this.headers,
+      this.abort
     )
     return img;
   }
 });
 
-L.TileLayer.wmsHeader = function (url, options, headers) {
-  return new L.TileLayer.WMSHeader(url, options, headers);
+L.TileLayer.wmsHeader = function (url, options, headers, abort) {
+  return new L.TileLayer.WMSHeader(url, options, headers, abort);
 }

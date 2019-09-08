@@ -57,3 +57,32 @@ let wmsLayer: L.TileLayer.WMSHeader = L.TileLayer.wmsHeader(
     ]
 ).addTo(map);
 ```
+
+### Abort parameter
+
+Abort parameter allow to abort the http request through a Promise. This optimization function might be usefull to stop the http request when it is not necessary anymore, mostly if many requests are pending.
+
+See below an example using an Observable as "abort" parameter.
+
+```ts
+let tileLayer: L.TileLayer.WMSHeader = L.TileLayer.wmsHeader(
+    'https://GEOSERVER_PATH/geoserver/wms?',
+    {
+        layers: layers,
+        format: 'image/png',
+        transparent: true,
+    }, [
+        { header: 'Authorization', value: 'JWT ' + MYAUTHTOKEN },
+        { header: 'content-type', value: 'text/plain'},
+    ],
+    new Promise((resolve, reject) => {
+        this.abortWMSObservable$
+            .pipe(
+                take(1)
+            )
+            .subscribe(x => {
+                resolve();
+            });
+        })
+);
+```

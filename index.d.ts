@@ -9,14 +9,16 @@ declare module 'leaflet' {
             constructor(
                 baseUrl: string,
                 options: WMSOptions,
-                header: {header: string, value: string}[]
+                header: {header: string, value: string}[],
+                abort: Promise<void>
             );
         }
 
         export function wmsHeader(
             baseUrl: string,
             options: WMSOptions,
-            header: {header: string, value: string}[]
+            header: {header: string, value: string}[],
+            abort: Promise<void>
         ): WMSHeader;
 
     }
