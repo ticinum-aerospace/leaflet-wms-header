@@ -43,6 +43,6 @@ L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
   }
 });
 
-L.TileLayer.wmsHeader = function (url, options, headers, abort) {
+L.tileLayer.wmsHeader = function (url, options, headers, abort) {
   return new L.TileLayer.WMSHeader(url, options, headers, abort);
 }
