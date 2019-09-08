@@ -31,7 +31,8 @@ var wmsLayer = L.TileLayer.wmsHeader(
     [
         { header: 'Authorization', value: 'JWT ' + MYAUTHTOKEN },
         { header: 'content-type', value: 'text/plain'},
-    ]
+    ],
+    null
 ).addTo(map);
 ```
 
@@ -54,7 +55,8 @@ let wmsLayer: L.TileLayer.WMSHeader = L.TileLayer.wmsHeader(
     }, [
         { header: 'Authorization', value: 'JWT ' + MYAUTHTOKEN },
         { header: 'content-type', value: 'text/plain'},
-    ]
+    ],
+    null
 ).addTo(map);
 ```
 
