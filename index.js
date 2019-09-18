@@ -1,4 +1,5 @@
 // import L from "leaflet";
+'use strict';
 
 async function fetchImage(url, callback, headers) {
   let _headers = {};

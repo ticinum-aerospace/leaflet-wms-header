@@ -1,6 +1,6 @@
-import * as L from "leaflet";
+import * as L from 'leaflet';
 
-declare module "leaflet" {
+declare module 'leaflet' {
     namespace TileLayer {
         export class WMSHeader extends WMS {
             constructor(
