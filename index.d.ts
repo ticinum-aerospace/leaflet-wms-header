@@ -6,8 +6,7 @@ declare module 'leaflet' {
             constructor(
                 baseUrl: string,
                 options: WMSOptions,
-                header: { header: string; value: string }[],
-                abort: Promise<void>
+                header: { header: string; value: string }[]
             );
         }
 
