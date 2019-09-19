@@ -18,6 +18,6 @@ declare module 'leaflet' {
             options: WMSOptions,
             header: {header: string, value: string}[],
             abort: Promise<void>
-        ): WMSHeader;
+        ): L.TileLayer.WMSHeader;
     }
 }
