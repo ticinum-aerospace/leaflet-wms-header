@@ -1,48 +1,46 @@
+// import L from "leaflet";
 'use strict';
 
-function callAjax(url, callback, headers, abort) {
-  var xmlhttp;
-  xmlhttp = new XMLHttpRequest();
-  xmlhttp.responseType = 'blob';
-  xmlhttp.onreadystatechange = () => {
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-      callback(xmlhttp.response);
-    }
-  }
-  xmlhttp.open("GET", url, true);
-  for (const h of headers) {
-    xmlhttp.setRequestHeader(h.header, h.value)
-  }
-  if (abort) {
-    var sub = abort.then(() => {
-      xmlhttp.abort();
-    });
-  }
-  xmlhttp.send();
+async function fetchImage(url, callback, headers) {
+  let _headers = {};
+  headers.forEach(h => {
+    _headers[h.header] = h.value;
+  });
+  const f = await fetch(url, {
+    method: "GET",
+    headers: _headers,
+    mode: "cors"
+  });
+  const blob = await f.blob();
+  callback(blob);
 }
 
 L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
-  initialize: function (url, options, headers, abort) {
+  initialize: function (url, options, headers) {
     L.TileLayer.WMS.prototype.initialize.call(this, url, options);
     this.headers = headers;
-    this.abort = abort;
   },
   createTile(coords, done) {
     const url = this.getTileUrl(coords);
-    const img = document.createElement('img');
-    callAjax(
+    const img = document.createElement("img");
+    img.setAttribute("role", "presentation");
+
+    fetchImage(
       url,
-      (response) => {
-        img.src = URL.createObjectURL(response);
+      resp => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(resp);
         done(null, img);
       },
-      this.headers,
-      this.abort
-    )
+      this.headers
+    );
     return img;
   }
 });
 
-L.tileLayer.wmsHeader = function (url, options, headers, abort) {
+L.TileLayer.wmsHeader = function (url, options, headers, abort) {
   return new L.TileLayer.WMSHeader(url, options, headers, abort);
-}
+};
