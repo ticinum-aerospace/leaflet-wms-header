@@ -14,6 +14,6 @@ declare module 'leaflet' {
             baseUrl: string,
             options: WMSOptions,
             header: { header: string; value: string }[]
-        ): WMSHeader;
+        ): L.TileLayer.WMSHeader;
     }
 }
