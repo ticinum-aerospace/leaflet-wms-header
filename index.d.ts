@@ -1,19 +1,21 @@
 import * as L from 'leaflet';
+import Observable from 'rxjs';
 
 declare module 'leaflet' {
-    namespace TileLayer {
-        export class WMSHeader extends WMS {
-            constructor(
-                baseUrl: string,
-                options: WMSOptions,
-                header: { header: string; value: string }[]
-            );
-        }
-
-        export function wmsHeader(
-            baseUrl: string,
-            options: WMSOptions,
-            header: { header: string; value: string }[]
-        ): L.TileLayer.WMSHeader;
+  namespace TileLayer {
+    export class WMSHeader extends WMS {
+      constructor(
+        baseUrl: string,
+        options: WMSOptions,
+        header: { header: string; value: string }[],
+        abort: Observable
+      );
     }
+    export function wmsHeader(
+      baseUrl: string,
+      options: WMSOptions,
+      header: { header: string; value: string }[],
+      abort: Observable
+    ): L.TileLayer.WMSHeader;
+  }
 }

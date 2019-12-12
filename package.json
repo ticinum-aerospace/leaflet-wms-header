@@ -1,6 +1,6 @@
 {
   "name": "leaflet-wms-header",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Custom headers on Leaflet TileLayer WMS",
   "main": "index.js",
   "types": "index.d.ts",
@@ -20,6 +20,7 @@
   "author": "Ticinum Aerospace",
   "license": "ISC",
   "dependencies": {
+    "rxjs": "^6.5.3",
     "typescript": "^2.9.2"
   }
 }

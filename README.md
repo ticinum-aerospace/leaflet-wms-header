@@ -77,14 +77,6 @@ let tileLayer: L.TileLayer.WMSHeader = L.TileLayer.wmsHeader(
         { header: 'Authorization', value: 'JWT ' + MYAUTHTOKEN },
         { header: 'content-type', value: 'text/plain'},
     ],
-    new Promise((resolve, reject) => {
-        this.abortWMSObservable$
-            .pipe(
-                take(1)
-            )
-            .subscribe(x => {
-                resolve();
-            });
-        })
+    this.abortWMSObservable$.pipe(take(1))
 );
 ```
