@@ -62,7 +62,7 @@ let wmsLayer: L.TileLayer.WMSHeader = L.TileLayer.wmsHeader(
 
 ### Abort parameter
 
-Abort parameter allow to abort the http request through a Promise. This optimization function might be usefull to stop the http request when it is not necessary anymore, mostly if many requests are pending.
+Abort parameter allow to abort the http request through an Observable. This optimization function might be usefull to stop the http request when it is not necessary anymore, mostly if many requests are pending. An example is provided on /tests/system-tests.html .
 
 See below an example using an Observable as "abort" parameter.
 
