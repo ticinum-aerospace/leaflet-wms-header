@@ -1,6 +1,9 @@
 'use strict';
 
-async function fetchImage(url, callback, headers, abort) {
+import * as Util from "leaflet/src/core/Util";
+import * as DomUtil from "leaflet/src/dom/DomUtil";
+
+async function fetchImage(url, callback, headers, abort, requests) {
   let _headers = {};
   if (headers) {
     headers.forEach(h => {
@@ -14,14 +17,22 @@ async function fetchImage(url, callback, headers, abort) {
       controller.abort();
     });
   }
-  const f = await fetch(url, {
+
+  const request = {
+    url,
+    controller
+  };
+  requests.push(request);
+
+  fetch(url, {
     method: "GET",
     headers: _headers,
     mode: "cors",
     signal: signal
+  }).then(async f => {
+    const blob = await f.blob();
+    callback(blob);
   });
-  const blob = await f.blob();
-  callback(blob);
 }
 
 L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
@@ -29,11 +40,13 @@ L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
     L.TileLayer.WMS.prototype.initialize.call(this, url, options);
     this.headers = headers;
     this.abort = abort;
+    this.requests = [];
   },
   createTile(coords, done) {
     const url = this.getTileUrl(coords);
     const img = document.createElement("img");
     img.setAttribute("role", "presentation");
+    img.setAttribute("data-url", url);
 
     fetchImage(
       url,
@@ -46,9 +59,31 @@ L.TileLayer.WMSHeader = L.TileLayer.WMS.extend({
         done(null, img);
       },
       this.headers,
-      this.abort
+      this.abort,
+      this.requests
     );
     return img;
+  },
+  _abortLoading: function() {
+    for (const i in this._tiles) {
+      if (this._tiles[i].coords.z !== this._tileZoom) {
+        const tile = this._tiles[i].el;
+
+        tile.onload = Util.falseFn;
+        tile.onerror = Util.falseFn;
+
+        const url = tile.getAttribute("data-url");
+        const j = this.requests.findIndex(r => r && r.url === url);
+        if (j >= 0) {
+          this.requests[j].controller.abort();
+
+          tile.src = Util.emptyImageUrl;
+          DomUtil.remove(tile);
+          delete this._tiles[i];
+          delete this.requests[j];
+        }
+      }
+    }
   }
 });
 
