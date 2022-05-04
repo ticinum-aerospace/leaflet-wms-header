@@ -19,6 +19,9 @@
   ],
   "author": "Ticinum Aerospace",
   "license": "ISC",
+  "peerDependencies": {
+    "leaflet": "^1.7.1"
+  },
   "dependencies": {
     "rxjs": "^6.5.3",
     "typescript": "^2.9.2"
